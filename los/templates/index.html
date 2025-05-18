@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Violation Detection</title>
+    <link rel="icon" href="/static/igggg.jpg" type="image/png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1E1E1E;
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .output-box {
+            background-color: black;
+            color: lime;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .footer {
+            margin-top: 30px;
+            color: #ccc;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container text-center">
+    <h2 class="text-center mb-4">🚦 Vehicle Violation Detector</h2>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+        <div class="mb-3">
+            <p class="lead">Upload an image or video for detection</p>
+            <input class="form-control" type="file" name="video" accept="video/*" required>
+        </div>
+        <button class="btn btn-primary" type="submit">▶ Run Detection</button>
+    </form>
+
+    <div class="progress mt-3" style="height: 20px; display: none;" id="progressContainer">
+        <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%">Processing...</div>
+    </div>
+
+    <div class="alert alert-warning mt-3" style="display: none;" id="noResult">❌ No violation detected in the video.</div>
+
+    <div class="mt-4 card" id="resultBox" style="display: none;">
+        <div class="card-body">
+            <h4 class="card-title">🔍 Detection Result</h4>
+            <p><b>Plate Number:</b> <span id="plate"></span></p>
+            <p><b>Violation:</b> <span id="violation"></span></p>
+            <p><b>Time:</b> <span id="time"></span></p>
+            <p><b>Vehicle Type:</b> <span id="vehicle"></span></p>
+            <p><b>Email Sent:</b> ✅ Yes</p>
+            <img id="violationImg" src="" class="img-thumbnail my-3" style="max-width: 400px;" />
+            <a id="pdfBtn" class="btn btn-success" href="#" target="_blank">📄 Download PDF Report</a>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+        <p>Group-46</p>
+    </div>
+<script>
+document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const progress = document.getElementById("progressContainer");
+    const resultBox = document.getElementById("resultBox");
+    const noResult = document.getElementById("noResult");
+
+    progress.style.display = "block";
+    resultBox.style.display = "none";
+    noResult.style.display = "none";
+
+    const res = await fetch("/upload", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await res.json();
+    progress.style.display = "none";
+
+    if (data.error) {
+        noResult.style.display = "block";
+        return;
+    }
+
+    resultBox.style.display = "block";
+    document.getElementById("plate").textContent = data.plate_number;
+    document.getElementById("violation").textContent = data.violation_type;
+    document.getElementById("time").textContent = data.timestamp;
+    document.getElementById("vehicle").textContent = data.vehicle_type;
+    document.getElementById("violationImg").src = "/cropped_violations/" + data.image_path;
+
+    const params = new URLSearchParams({
+        plate: data.plate_number,
+        image: data.image_path,
+        violation: data.violation_type,
+        time: data.timestamp,
+        vehicle: data.vehicle_type
+    });
+
+    document.getElementById("pdfBtn").href = "/download-pdf?" + params.toString();
+});
+</script>
+
+</body>
+</html>

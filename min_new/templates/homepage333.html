@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <title>Analytical Portal</title>
+    <link rel="icon" href="/static/old/assets/images/igggg.jpg" type="image/png">
+    <script src="https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <link href="/static/old/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/old/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/static/old/assets/css/templatemo-digimedia-v1.css">
+    <link rel="stylesheet" href="/static/old/assets/css/animated.css">
+    <link rel="stylesheet" href="/static/old/assets/css/owl.css">
+
+<style>
+    .small-card {
+        width: 230px;
+        background-color: #bb2d3b;
+        color: white;
+        text-align: center;
+        border-radius: 10px; /* Rounded corners */
+        padding: 12px;
+        box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    }
+    .card-title {
+        font-size: 16px; /* Slightly smaller title */
+        font-weight: bold;
+    }
+    .card-text {
+        font-size: 20px; /* Larger case count */
+        font-weight: bold;
+        color: white;
+    }
+</style>
+<style>
+     #clock-container {
+        text-align: center;
+        font-size: 0.8rem;
+        color: white;
+    }
+
+        /* CSS for popup notifications */
+        .flash-message {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background-color: #0171d3;
+            color: black;
+            padding: 15px;
+            border-radius: 5px;
+            z-index: 1050; /* Ensure it stays on top of other content */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+        .flash-message.fade-out {
+            opacity: 0;
+        }
+    </style>
+    <style>
+        /* Basic styling for the popup and overlay */
+        #popup, #overlay {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #popup {
+            background: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        #overlay {
+            background: rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+        }
+        input, button {
+            width: 50%;
+            padding: 8px;
+            margin: 5px 0;
+        }
+
+    </style>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", Arial, Helvetica, sans-serif;
+      }
+      .formbold-mb-5 {
+        margin-bottom: 20px;
+      }
+      .formbold-pt-3 {
+        padding-top: 12px;
+      }
+      .formbold-main-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 48px;
+      }
+
+      .formbold-form-wrapper {
+        margin: 0 auto;
+        max-width: 550px;
+        width: 100%;
+        background: white;
+      }
+      .formbold-form-label {
+        display: block;
+        font-weight: 500;
+        font-size: 16px;
+        color: #07074d;
+        margin-bottom: 12px;
+      }
+      .formbold-form-label-2 {
+        font-weight: 600;
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+
+      .formbold-form-input {
+        width: 100%;
+        padding: 12px 24px;
+        border-radius: 6px;
+        border: 1px solid #e0e0e0;
+        background: white;
+        font-weight: 500;
+        font-size: 16px;
+        color: #6b7280;
+        outline: none;
+        resize: none;
+      }
+      .formbold-form-input:focus {
+        border-color: #6a64f1;
+        box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .formbold-btn {
+        text-align: center;
+        font-size: 16px;
+        border-radius: 6px;
+        padding: 14px 32px;
+        border: none;
+        font-weight: 600;
+        background-color: #6a64f1;
+        color: white;
+        width: 100%;
+        cursor: pointer;
+      }
+      .formbold-btn:hover {
+        box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .formbold--mx-3 {
+        margin-left: -12px;
+        margin-right: -12px;
+      }
+      .formbold-px-3 {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+      .flex {
+        display: flex;
+      }
+      .flex-wrap {
+        flex-wrap: wrap;
+      }
+      .w-full {
+        width: 100%;
+      }
+      @media (min-width: 540px) {
+        .sm\:w-half {
+          width: 50%;
+        }
+      }
+    </style>
+  </head>
+
+<body>
+
+<div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+</div>
+
+<header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+
+            <a  class="logo">
+                <div>
+                    <img src="/static/old/assets/images/log.png"  alt=" Portal" style="width: 120px; height: 36px;">
+                </div>
+            </a>
+
+            <ul class="nav">
+                <form action="{{ url_for('anlogout') }}" method="get">
+                    <button type="submit" class="btn btn-danger" style="width: 100%; line-height: 1;">LOG-OUT</button>
+                </form>
+              <li id="clock-container">
+                    <span id="date"></span><br>
+                    <span id="time"></span>
+                </li>
+            </ul>
+                <a class='menu-trigger'>
+                    <span>Menu</span>
+                </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+</header>
+
+
+<div id="services" class="services section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+           {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div id="flash-message" class="flash-message">
+                        {% for message in messages %}
+                            <p style="color: white;">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+          <div class="section-heading  wow fadeInDown" data-wow-duration="0.55s" data-wow-delay="0.3s"><br>
+            <h4>Analytical-Portal</h4>
+            <div class="line-dec"></div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="naccs">
+            <div class="grid">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="menu">
+                    <div class="first-thumb active">
+                      <div class="thumb">
+                        <span class="icon"><img src="/static/old/assets/images/2.png" alt=""></span>
+                        Violation <br>Monitoring
+                      </div>
+                    </div>
+                    <div>
+                      <div class="thumb">
+                        <span class="icon"><img src="/static/old/assets/images/3.png" alt=""></span>
+                        Court<br> Cases
+                      </div>
+                    </div>
+                      <div>
+                      <div class="thumb">
+                        <span class="icon"><img src="/static/old/assets/images/3.png" alt=""></span>
+                        Fine <br> Cases
+                      </div>
+                    </div>
+                    <div>
+                      <div class="thumb">
+                        <span class="icon"><img src="/static/old/assets/images/6.png" alt=""></span>
+                        Request /<br> Guidance
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <ul class="nacc">
+                    <li class="active">
+                      <div>
+                        <div class="thumb">
+                          <div class="row">
+
+                            <div>
+                                    <a href="http://localhost:5000" target="_blank" class="btn btn-primary">🚦Launch Violation Detector</a>
+
+                                    <a href="http://127.0.0.1:5008" target="_blank" class="btn btn-primary">🚦Launch Number Plate Detector</a>
+                            </div>
+                                <p>Analysis</p>
+                              <div class="col-md-3">
+                                     <div class="card small-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Total Detections:</h5>
+                                            <p id="detect-count" class="card-text">Loading...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                  <div class="col-md-3">
+                                     <div class="card small-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Total Fine Amount:</h5>
+                                            <p id="detect-total-fine" class="card-text">Loading...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="col-md-3">
+                                     <div class="card small-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Unique Vehicles:</h5>
+                                            <p id="detect-total-vehicles" class="card-text">Loading...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                              <p id="detect-error-message" class="text-danger"></p>
+
+                                <h3>System Detected Vehicles</h3>
+                                <table class="table table-striped">
+                                  <thead>
+                                    <tr>
+                                      <th>Vehicle_No</th>
+                                      <th>Violation_Date</th>
+                                      <th>Violation_Type</th>
+                                      <th>Fine-Amount</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="detect-table-body">
+                                    <!-- Dynamically filled -->
+                                  </tbody>
+                                </table>
+
+                                    <form action="/start_violation" method="get">
+                                        <button type="submit">Violation Detection System-PC only</button>
+                                    </form>
+                                    <form action="/start_plate" method="get">
+                                        <button type="submit">Number Plate System-PC only </button>
+                                    </form>
+
+                            </div>
+                          </div>
+                        </div>
+
+
+                    </li>
+                   <li>
+                    <div>
+                      <div class="thumb">
+                        <div class="row">
+                            <div class="row">
+                                 <div class="col-md-3">
+                                     <div class="card small-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Total Cases:</h5>
+                                            <p id="case-count" class="card-text">Loading...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                        <div class="card small-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Unique Vehicles:</h5>
+                                                <p id="vehicle-count" class="card-text">Loading...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                            </div>
+
+
+
+                          <div>
+                            <div class="left-text">
+                                <h4>Court Cases File Details</h4>
+                            </div>
+                          </div>
+                          <section class="ftco-section">
+                            <div class="container">
+
+                                   <div id="court-table-container">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Officer.ID</th>
+                                                                <th>Nic</th>
+                                                                <th>Violation</th>
+                                                                <th>Vehicle Number</th>
+                                                                <th>Date-Time</th>
+                                                                <th>Email</th>
+                                                                <th>Phone Number</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="court-table-body">
+                                                            <!-- Data rows will be inserted here -->
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                    </div>
+                                  </section>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+
+
+                      <li>
+                    <div>
+                      <div class="thumb">
+                        <div class="row">
+                            <div class="row">
+                                    <!-- Fine Cases Card -->
+                                    <div class="col-md-3">
+                                        <div class="card small-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Total Fine Cases:</h5>
+                                                <p id="fine-count" class="card-text">Loading...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card small-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Unique Vehicles:</h5>
+                                                <p id="total-vehicle-count" class="card-text">Loading...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Total Fine Amount Card -->
+                                    <div class="col-md-3">
+                                        <div class="card small-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Total Amount:</h5>
+                                                <p id="total-fine-amount" class="card-text">Loading...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                          <div>
+                            <div class="left-text">
+                                 <h4>Fine Cases File Details</h4>
+                            </div>
+
+
+                          </div>
+                          <section class="ftco-section">
+                            <div class="container">
+
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="table-wrap">
+                                   <div id="fine-table-container">
+                                                    <!-- License fine table will be populated here -->
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Officer.ID</th>
+                                                                <th>NIC</th>
+                                                                <th>Violation</th>
+                                                                <th>License Number</th>
+                                                                <th>Vehicle Number</th>
+                                                                <th>Fine Amount</th>
+                                                                <th>Date-Time</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="fine-table-body">
+                                                            <!-- Data rows will be inserted here -->
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                <div id="error-message" class="error"></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </section>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+
+
+
+
+                    <li>
+                    <div>
+                      <div class="thumb">
+                        <div class="row">
+                          <div>
+                            <div class="left-text">
+                                 <h4>Insert Road Coordinates</h4>
+                              <a onclick="togglePopup()" class="btn btn-primary">Update Road Breakdowns</a>
+                              <div id="overlay" onclick="togglePopup()"></div>
+                                                <div id="popup">
+                                                    <form action="{{ url_for('coordinates_register') }}" method="POST">
+
+                                                                    <label for="Road_name">Road Name:</label>
+                                                                    <input type="text" name="Road_name" class="form-control" id="Road_name" required>
+
+                                                                    <label for="Latitude">Mark Point Latitude:</label>
+                                                                    <input name="Latitude" class="form-control" id="Latitude" required>
+
+                                                                    <label for="Longitude">Mark Point Longitude:</label>
+                                                                    <input  name="Longitude" class="form-control" id="Longitude" required>
+
+                                                                    <label for="Description">Specify the Problem:</label>
+                                                                    <textarea name="Description" class="form-control" id="Description" rows="3"></textarea>
+
+                                                                    <label for="Start_lat">Start Point Latitude:</label>
+                                                                    <input  name="Start_lat" class="form-control" id="Start_lat" required>
+
+                                                                    <label for="Start_lon">Start Point Longitude:</label>
+                                                                    <input  name="Start_lon" class="form-control" id="Start_lon" required>
+
+                                                                    <label for="End_lat">End Point Latitude:</label>
+                                                                    <input  name="End_lat" class="form-control" id="End_lat" required>
+
+                                                                    <label for="End_lon">End Point Longitude:</label>
+                                                                    <input  name="End_lon" class="form-control" id="End_lon" required>
+
+                                                                <button type="submit" class="btn btn-primary">Submit Coordinates</button>
+                                                            </form>
+                                                </div>
+                                 <a href="/static/Violation analysis.pbix" download class="btn btn-primary">Download Power BI Dashboard</a>
+                                                    <br><br>
+                              <h4>Hospital Requests list</h4>
+                            </div>
+                          </div>
+                          <section class="ftco-section">
+                            <div class="container">
+
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="table-wrap">
+                                    <table class="table table-striped">
+                                      <thead>
+                                        <tr>
+                                          <th>E_ID</th>
+                                          <th>Name</th>
+                                          <th>Nic</th>
+                                          <th>Address</th>
+                                          <th>Vehicle_No</th>
+                                          <th>From</th>
+                                          <th>To</th>
+                                          <th>Status</th>
+
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+
+                                        <tr>
+                                          <th scope="row">1003</th>
+                                          <td>janith hetiarachi</td>
+                                          <td>200009977527</td>
+                                          <td>jahathroad</td>
+                                          <td>YC67968</td>
+                                          <td>rajakiriya</td>
+                                          <td>asirihospital</td>
+                                          <td><a href="" class="btn btn-success">Approve</a></td>
+                                          <td><a href="" class="btn btn-danger">Decline</a></td>
+                                        </tr>
+
+                                        <tr>
+                                          <th scope="row">1004</th>
+                                          <td>janith hetiarachi</td>
+                                          <td>200009977527</td>
+                                          <td>jahathroad</td>
+                                          <td>YC67968</td>
+                                          <td>rajakiriya</td>
+                                          <td>asirihospital</td>
+                                          <td><a href="" class="btn btn-success">Approve</a></td>
+                                          <td><a href="" class="btn btn-danger">Decline</a></td>
+                                        </tr>
+
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </section>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+          </ul>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Copyright &copy; 2025 SLTC GRP-46.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<script>
+        function togglePopup() {
+            const popup = document.getElementById('popup');
+            const overlay = document.getElementById('overlay');
+            const isVisible = popup.style.display === 'block';
+            popup.style.display = isVisible ? 'none' : 'block';
+            overlay.style.display = isVisible ? 'none' : 'block';
+        }
+</script>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+
+    // Get month name
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const monthName = months[now.getMonth()];
+
+    // Get date
+    const day = String(now.getDate()).padStart(2, '0');
+    const year = now.getFullYear();
+
+    // Get time
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    // Update DOM elements
+    document.getElementById('date').textContent = `${day} - ${monthName} - ${year}`;
+    document.getElementById('time').textContent = `${hours}:${minutes}:${seconds}`;
+}
+
+// Update the clock every second
+setInterval(updateClock, 1000);
+
+// Initialize clock immediately
+updateClock();
+
+</script>
+
+  <script>
+        // Check if the flash message exists
+        window.onload = function() {
+            var flashMessage = document.getElementById('flash-message');
+            if (flashMessage) {
+                // After 5 seconds, make the flash message fade out
+                setTimeout(function() {
+                    flashMessage.classList.add('fade-out');
+                    // After the fade-out animation, remove the flash message
+                    setTimeout(function() {
+                        flashMessage.style.display = 'none';
+                    }, 1000);  // Time to allow fade-out animation to complete
+                }, 7000);  // Show the message for 7 seconds
+            }
+        };
+    </script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+  <script>
+    fetch('/court_table')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Data received from server:', data);
+            const courtTableBody = document.getElementById('court-table-body');
+            const caseCountElement = document.getElementById('case-count');
+            const VehicleCountElement = document.getElementById('vehicle-count');
+
+            let vehicleCount = 0;
+
+            if (data.error) {
+                document.getElementById('error-message').textContent = `Error: ${data.error}`;
+                caseCountElement.textContent = "Error fetching data";
+                VehicleCountElement.textContent = "Error fetching data";
+                return;
+            }
+
+            if (Array.isArray(data) && data.length > 0) {
+                caseCountElement.textContent = data.length; // Display case count
+                let seenVehicles = new Set();
+
+                data.forEach(caseData => {
+                    seenVehicles.add(caseData.vehicle_no);
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td>${caseData.Emp_id}</td>
+                        <td>${caseData.Nic}</td>
+                        <td>${caseData.Violation}</td>
+                        <td>${caseData.vehicle_no}</td>
+                        <td>${caseData.Date_Time}</td>
+                        <td>${caseData.Email}</td>
+                        <td>${caseData.Phone_Number}</td>
+                    `;
+                    courtTableBody.appendChild(row);
+                });
+                VehicleCountElement.textContent = seenVehicles.size;
+            } else {
+                caseCountElement.textContent = "0"; // No cases found
+                VehicleCountElement.textContent = "0";
+                document.getElementById('error-message').textContent = 'No court cases found.';
+
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching court table data:', error);
+            document.getElementById('error-message').textContent = 'Error fetching data from the server.';
+            document.getElementById('case-count').textContent = "Error fetching data";
+            document.getElementById('vehicle-count').textContent = "Error fetching data";
+        });
+</script>
+
+<script>
+        fetch('/fine_table')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Data received from server:', data);
+                const fineTableBody = document.getElementById('fine-table-body');
+                const fineCountElement = document.getElementById('fine-count');
+                const totalFineAmountElement = document.getElementById('total-fine-amount');
+                const totalVehicleCountElement = document.getElementById('total-vehicle-count');
+
+                let vehicleCount = 0;
+                let totalFineAmount = 0;
+
+                if (data.error) {
+                    const errorMessage = document.getElementById('error-message');
+                    errorMessage.textContent = `Error: ${data.error}`;
+                    totalFineAmountElement.textContent = "Error fetching data";
+                    totalVehicleCountElement.textContent = "Error fetching data";
+                    return;
+                }
+
+                if (Array.isArray(data) && data.length > 0) {
+
+                    fineCountElement.textContent = data.length;
+                    let seenVehicles = new Set();
+
+                    data.forEach(fineData => {
+                        totalFineAmount += parseFloat(fineData.Fine);
+                        seenVehicles.add(fineData.Veh_no);
+                        const row = document.createElement('tr');
+
+
+                        row.innerHTML = `
+                            <td>${fineData.Emp_id}</td>
+                            <td>${fineData.Nic}</td>
+                            <td>${fineData.Violation}</td>
+                            <td>${fineData.Lic_no}</td>
+                            <td>${fineData.Veh_no}</td>
+                            <td>${fineData.Fine}</td>
+                            <td>${fineData.Date}</td>
+
+                        `;
+                        fineTableBody.appendChild(row);
+                    });
+                    totalFineAmountElement.textContent = totalFineAmount.toFixed(2);
+                    totalVehicleCountElement.textContent = seenVehicles.size;
+                } else {
+                    totalFineAmountElement.textContent = "0.00";
+                    fineCountElement.textContent = "0";
+                    totalVehicleCountElement.textContent = "0";
+                    const errorMessage = document.getElementById('error-message');
+                    errorMessage.textContent = 'No fine data found.';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching fine table data:', error);
+                document.getElementById('error-message').textContent = 'Error fetching data from the server.';
+                document.getElementById('fine-count').textContent = "Error fetching data";
+                document.getElementById('total-fine-amount').textContent = "Error fetching data";
+                document.getElementById('total-vehicle-count').textContent = "Error fetching data";
+            });
+    </script>
+
+<script>
+    fetch('/detect_table')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Detection data received from server:', data);
+
+            const detectTableBody = document.getElementById('detect-table-body');
+            const detectCountElement = document.getElementById('detect-count');
+            const totalFineAmountElement = document.getElementById('detect-total-fine');
+            const totalVehicleCountElement = document.getElementById('detect-total-vehicles');
+
+            let vehicleCount = 0;
+            let totalFineAmount = 0;
+
+            if (data.error) {
+                document.getElementById('detect-error-message').textContent = `Error: ${data.error}`;
+                detectCountElement.textContent = "Error";
+                totalFineAmountElement.textContent = "Error";
+                totalVehicleCountElement.textContent = "Error";
+                return;
+            }
+
+            if (Array.isArray(data) && data.length > 0) {
+                detectCountElement.textContent = data.length;
+
+                const seenVehicles = new Set();
+
+                data.forEach(entry => {
+                    totalFineAmount += parseFloat(entry.fine);
+                    seenVehicles.add(entry.plate_number);
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${entry.plate_number}</td>
+                        <td>${entry.detected_at}</td>
+                        <td>${entry.violation_type}</td>
+                        <td>${entry.fine}</td>
+                    `;
+                    detectTableBody.appendChild(row);
+                });
+
+                totalVehicleCountElement.textContent = seenVehicles.size;
+                totalFineAmountElement.textContent = totalFineAmount.toFixed(2);
+            } else {
+                detectCountElement.textContent = "0";
+                totalFineAmountElement.textContent = "0.00";
+                totalVehicleCountElement.textContent = "0";
+                document.getElementById('detect-error-message').textContent = 'No detection data found.';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching detection data:', error);
+            document.getElementById('detect-error-message').textContent = 'Error fetching data from the server.';
+            document.getElementById('detect-count').textContent = "Error";
+            document.getElementById('detect-total-fine').textContent = "Error";
+            document.getElementById('detect-total-vehicles').textContent = "Error";
+        });
+</script>
+
+
+  <script src="/static/old/vendor/jquery/jquery.min.js"></script>
+  <script src="/static/old/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/old/assets/js/owl-carousel.js"></script>
+  <script src="/static/old/assets/js/animation.js"></script>
+  <script src="/static/old/assets/js/imagesloaded.js"></script>
+  <script src="/static/old/assets/js/custom.js"></script>
+
+</body>
+</html>

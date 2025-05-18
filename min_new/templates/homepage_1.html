@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <title>Government-Portal</title>
+    <link rel="icon" href="/static/old/assets/images/igggg.jpg" type="image/png">
+    <script src="https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <link href="/static/old/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/old/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/static/old/assets/css/templatemo-digimedia-v1.css">
+    <link rel="stylesheet" href="/static/old/assets/css/animated.css">
+    <link rel="stylesheet" href="/static/old/assets/css/owl.css">
+
+<style>
+    .small-card {
+        width: 300px;
+        background-color: #bb2d3b;
+        color: white;
+        text-align: center;
+        border-radius: 10px; /* Rounded corners */
+        padding: 12px;
+        box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    }
+
+     #clock-container {
+        text-align: center;
+        font-size: 0.8rem;
+        color: white;
+    }
+
+        /* CSS for popup notifications */
+        .flash-message {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background-color: #0171d3;
+            color: black;
+            padding: 15px;
+            border-radius: 5px;
+            z-index: 1050; /* Ensure it stays on top of other content */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+        .flash-message.fade-out {
+            opacity: 0;
+        }
+    </style>
+    <style>
+        /* Basic styling for the popup and overlay */
+        #popup, #overlay {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #popup {
+            background: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        #overlay {
+            background: rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+        }
+        input, button {
+            width: 50%;
+            padding: 8px;
+            margin: 5px 0;
+        }
+
+    </style>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", Arial, Helvetica, sans-serif;
+      }
+      .formbold-mb-5 {
+        margin-bottom: 20px;
+      }
+      .formbold-pt-3 {
+        padding-top: 12px;
+      }
+      .formbold-main-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 48px;
+      }
+
+      .formbold-form-wrapper {
+        margin: 0 auto;
+        max-width: 550px;
+        width: 100%;
+        background: white;
+      }
+      .formbold-form-label {
+        display: block;
+        font-weight: 500;
+        font-size: 16px;
+        color: #07074d;
+        margin-bottom: 12px;
+      }
+      .formbold-form-label-2 {
+        font-weight: 600;
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+
+      .formbold-form-input {
+        width: 100%;
+        padding: 12px 24px;
+        border-radius: 6px;
+        border: 1px solid #e0e0e0;
+        background: white;
+        font-weight: 500;
+        font-size: 16px;
+        color: #6b7280;
+        outline: none;
+        resize: none;
+      }
+      .formbold-form-input:focus {
+        border-color: #6a64f1;
+        box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .formbold-btn {
+        text-align: center;
+        font-size: 16px;
+        border-radius: 6px;
+        padding: 14px 32px;
+        border: none;
+        font-weight: 600;
+        background-color: #6a64f1;
+        color: white;
+        width: 100%;
+        cursor: pointer;
+      }
+      .formbold-btn:hover {
+        box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .formbold--mx-3 {
+        margin-left: -12px;
+        margin-right: -12px;
+      }
+      .formbold-px-3 {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+      .flex {
+        display: flex;
+      }
+      .flex-wrap {
+        flex-wrap: wrap;
+      }
+      .w-full {
+        width: 100%;
+      }
+      @media (min-width: 540px) {
+        .sm\:w-half {
+          width: 50%;
+        }
+      }
+    </style>
+  </head>
+
+<body>
+
+<div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+</div>
+
+<header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+
+            <a  class="logo">
+                <div>
+                    <img src="/static/old/assets/images/log.png"  alt=" Portal" style="width: 120px; height: 36px;">
+                </div>
+            </a>
+
+            <ul class="nav">
+                <form action="{{ url_for('govlogout') }}" method="get">
+                    <button type="submit" class="btn btn-danger" style="width: 100%; line-height: 1;">LOG-OUT</button>
+                </form>
+              <li id="clock-container">
+                    <span id="date"></span><br>
+                    <span id="time"></span>
+                </li>
+            </ul>
+                <a class='menu-trigger'>
+                    <span>Menu</span>
+                </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+</header>
+
+
+<div id="services" class="services section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+           {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div id="flash-message" class="flash-message">
+                        {% for message in messages %}
+                            <p style="color: white;">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+          <div class="section-heading  wow fadeInDown" data-wow-duration="0.55s" data-wow-delay="0.3s"><br>
+            <h4>Government Scan Portal</h4>
+            <div class="line-dec"></div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="naccs">
+            <div class="grid">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="menu">
+                    <div class="first-thumb active">
+                      <div class="thumb">
+                        <span class="icon"><img src="/static/old/assets/images/1.png" alt=""></span>
+                        License <br>Scanning
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <ul class="nacc">
+                    <li class="active">
+                      <div>
+                        <div class="thumb">
+
+                          <div class="row">
+                            <div>
+                              <div class="left-text">
+                                <h4>Scan or Manual Enter Details...</h4>
+                                <div class="ticks-list"><span><i class="fa fa-check"></i> overtaken</span> <span><i class="fa fa-check"></i> danger driving</span> <span><i class="fa fa-check"></i> over speed</span>
+                                  <span><i class="fa fa-check"></i> threaten drive</span></div>
+                                  <div>
+                                    <div class="right-image">
+                                      <br>
+                                        <div class="row">
+                                      <div id="qr-reader" style="width: 400px; height: 300px;"></div>
+
+                                        <div class="col-md-4">
+                                            <div class="card shadow-sm rounded-lg border-0">
+                                                <div class="card-header bg-primary text-white">
+                                                    <h5 class="mb-0">Previous Details</h5>
+                                                </div>
+                                                <div class="card-body" id="resultContainer">
+                                                    <p class="text-muted">previous violations/fine show page.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                      <br>
+
+                                      <div id="result-display"></div>
+
+                                 </div>
+
+
+                                <p>Safe Drive! Save Live!</p>
+
+                                <div class="formbold-main-wrapper">
+                                  <div class="formbold-form-wrapper">
+
+                                        <form method="POST" action="{{ url_for('handle_form_submission') }}"  id="courtForm">
+                                                                        <div class="formbold-mb-5">
+                                                                            <label for="qr-result" class="formbold-form-label">License-Number</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="LIC"
+                                                                                id="qr-result"
+                                                                                placeholder="Enter OR Scan"
+                                                                                class="formbold-form-input"
+                                                                                oninput="getUserDetails()"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="formbold-mb-5">
+                                                                            <label for="nic" class="formbold-form-label">National Identity Card-Number</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="Nic"
+                                                                                id="nic"
+                                                                                placeholder="Auto Generate"
+                                                                                class="formbold-form-input"
+
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="formbold-mb-5">
+                                                                            <label for="name" class="formbold-form-label">Full-Name</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="Name"
+                                                                                id="name"
+                                                                                placeholder="Auto Generate"
+                                                                                class="formbold-form-input"
+
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="formbold-mb-5">
+                                                                            <label for="phone" class="formbold-form-label">Phone-Number</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="Phone"
+                                                                                id="phone"
+                                                                                placeholder="Auto Generate"
+                                                                                class="formbold-form-input"
+
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="formbold-mb-5">
+                                                                            <label for="email" class="formbold-form-label">Email</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="Email"
+                                                                                id="email"
+                                                                                placeholder="Auto Generate"
+                                                                                class="formbold-form-input"
+
+                                                                            />
+                                                                        </div>
+                                                                        <div class="formbold-mb-5">
+                                                                            <label for="nic" class="formbold-form-label">Vehicle-Number</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="VEH"
+                                                                                id="veh"
+                                                                                placeholder="Enter vehicle number"
+                                                                                class="formbold-form-input"
+                                                                            />
+                                                                        </div>
+                                                                        <div class="formbold-mb-5">
+                                                                            <label for="report" class="formbold-form-label">Enter-The-Violation</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="Report"
+                                                                                id="report"
+                                                                                placeholder="Enter the Violation scene with full explanation"
+                                                                                class="formbold-form-input"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        <div class="formbold-mb-5">
+                                                                            <label for="pay" class="formbold-form-label">Fine-Amount</label>
+                                                                            <select name="Pay" id="pay" class="formbold-form-input">
+                                                                                <option value="" disabled selected>Select Violation For Fine</option>
+                                                                                <option value="1000">Identification Plates</option>
+                                                                                <option value="1000">Not Wearing Protective Helmets </option>
+                                                                                <option value="500">Non-Use of seat belts</option>
+                                                                                <option value="2000">Danger Driving</option>
+                                                                                <option value="2000">Contravening Speed Limits</option>
+                                                                                <option value="1500">Without Documents</option>
+                                                                            </select>
+                                                                        </div>
+
+                                                                        <div class="formbold-btn-container">
+                                                                            <button type="submit" class="formbold-btn" name="submit_type" value="fine" >Fines-in-lieu-of-prosecution</button>
+                                                                        </div>
+                                                                                <div id="messageDiv"></div>
+                                                                        <div class="formbold-btn-container">
+                                                                            <button type="submit" name="submit_type" value="court" class="formbold-btn">Prosecution</button>
+
+                                                                        </div>
+
+                                                        </form>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </li>
+                  </ul>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Copyright &copy; 2025 SLTC GRP-46.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+<script>
+                                          // Function to handle successful QR code scan
+                                          function onScanSuccess(decodedText, decodedResult) {
+                                              // Display the scanned result in the input box
+                                              document.getElementById('qr-result').value = decodedText;
+
+                                              // Optionally, display it under the text box as well
+                                              document.getElementById('result-display').innerText = "Scanned LIC QR Code: " + decodedText;
+
+                                              // Send the scanned QR code to Flask backend for further processing
+                                              fetch('/scan', {
+                                                  method: 'POST',
+                                                  headers: {
+                                                      'Content-Type': 'application/json'
+                                                  },
+                                                  body: JSON.stringify({ qr_data: decodedText })
+                                              })
+                                              .then(response => response.json())
+                                              .then(data => {
+                                                  console.log(data.message);
+                                              })
+                                              .catch(error => {
+                                                  console.error('Error:', error);
+                                              });
+                                          }
+
+                                          // Function to handle scan errors (optional)
+                                          function onScanError(errorMessage) {
+                                              console.warn("Scan error:", errorMessage);
+                                          }
+
+                                          // Initialize the QR scanner with camera access
+                                          const html5QrCode = new Html5Qrcode("qr-reader");
+
+                                          // Start scanning with the back camera (facingMode: "environment") or front camera if not available
+                                          html5QrCode.start(
+                                              { facingMode: "environment" },
+                                              {
+                                                  fps: 60,      // Increase frames per second (up to 30 FPS or more for faster response)
+                                                  qrbox: 260,
+
+                                                  mirror: false
+                                              },
+                                              onScanSuccess,  // Callback on scan success
+                                              onScanError     // Callback on scan error
+                                          ).catch((error) => {
+                                              console.error("Error starting QR scanner:", error);
+                                          });
+</script>
+
+
+
+<script>
+        function togglePopup() {
+            const popup = document.getElementById('popup');
+            const overlay = document.getElementById('overlay');
+            const isVisible = popup.style.display === 'block';
+            popup.style.display = isVisible ? 'none' : 'block';
+            overlay.style.display = isVisible ? 'none' : 'block';
+        }
+</script>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+
+    // Get month name
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const monthName = months[now.getMonth()];
+
+    // Get date
+    const day = String(now.getDate()).padStart(2, '0');
+    const year = now.getFullYear();
+
+    // Get time
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    // Update DOM elements
+    document.getElementById('date').textContent = `${day} - ${monthName} - ${year}`;
+    document.getElementById('time').textContent = `${hours}:${minutes}:${seconds}`;
+}
+
+// Update the clock every second
+setInterval(updateClock, 1000);
+
+// Initialize clock immediately
+updateClock();
+
+</script>
+
+  <script>
+        // Check if the flash message exists
+        window.onload = function() {
+            var flashMessage = document.getElementById('flash-message');
+            if (flashMessage) {
+                // After 5 seconds, make the flash message fade out
+                setTimeout(function() {
+                    flashMessage.classList.add('fade-out');
+                    // After the fade-out animation, remove the flash message
+                    setTimeout(function() {
+                        flashMessage.style.display = 'none';
+                    }, 1000);  // Time to allow fade-out animation to complete
+                }, 7000);  // Show the message for 7 seconds
+            }
+        };
+    </script>
+
+  <script>
+      document.getElementById('qr-result').addEventListener('input', function() {
+        getUserDetails();
+    });
+
+    document.getElementById('qr-result').addEventListener('focus', function() {
+            var licNumber = document.getElementById('qr-result').value;
+            if (licNumber.trim() !== '') {
+                getUserDetails();
+            }
+    });
+
+    function getUserDetails() {
+        var licNumber = document.getElementById('qr-result').value;
+
+        document.getElementById('nic').value = '';
+        document.getElementById('name').value = '';
+        document.getElementById('phone').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('report').value = '';
+        document.getElementById('pay').value = '';
+        document.getElementById('veh').value = '';
+
+        if (licNumber.trim() !== '') {
+            fetch(`/get_details?qr-result=${licNumber}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const user = data.user;
+
+                        // Populate the form fields with the received data
+                        document.getElementById('nic').value = user.Nic_no;
+                        document.getElementById('name').value = user.Name;
+                        document.getElementById('phone').value = user.Phone_Number;
+                        document.getElementById('email').value = user.Email;
+
+                    } else {
+                        // Clear fields if no user data found
+                        document.getElementById('nic').value = '';
+                        document.getElementById('name').value = '';
+                        document.getElementById('phone').value = '';
+                        document.getElementById('email').value = '';
+                        document.getElementById('report').value = '';
+                        document.getElementById('pay').value = '';
+                        document.getElementById('veh').value = '';
+                        alert(data.message || 'No user found for the given LIC number.');
+                    }
+                })
+                .catch(error => {
+                    alert('An error occurred while fetching user details: ' + error.message);
+                });
+        }
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("courtForm");
+        const buttons = document.querySelectorAll("button[name='submit_type']");
+        const messageDiv = document.getElementById("messageDiv");
+
+        buttons.forEach(button => {
+            button.addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent default form submission
+                const submitType = this.value; // Get the value of the clicked button
+
+                // Create FormData object and append form fields
+                let formData = new FormData(form);
+                formData.append("submit_type", submitType);
+
+                // Send AJAX request
+                fetch("/handle_form_submission", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        messageDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                    } else {
+                        messageDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                    }
+                })
+                .catch(error => {
+                    messageDiv.innerHTML = `<div class="alert alert-danger">An error occurred: ${error.message}</div>`;
+                });
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const qrResult = document.getElementById("qr-result");
+        const resultContainer = document.getElementById("resultContainer");
+
+        qrResult.addEventListener("input", function () {
+            const licenseNumber = qrResult.value.trim();
+            if (licenseNumber === "") {
+                resultContainer.innerHTML = `<p class="text-muted">Enter license number for previous violations.</p>`;
+                return;
+            }
+
+            let totalFine = 0;
+            let totalViolations = 0;
+            let outputHTML = "";
+
+            // First fetch license fines
+            fetch("/fine_table")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        resultContainer.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+                        return;
+                    }
+
+                    const filteredFines = data.filter(fine => fine.Lic_no === licenseNumber);
+                    totalViolations += filteredFines.length;
+
+                    let finesHTML = "";
+                    if (filteredFines.length > 0) {
+                        filteredFines.forEach(fine => {
+                            totalFine += parseFloat(fine.Fine);
+                            finesHTML += `
+                                <div class="border-bottom py-2">
+                                    <p class="mb-1 text-danger"><strong>F-V:</strong> ${fine.Violation}</p>
+                                    <p class="mb-0 text-danger"><strong>Date:</strong> ${fine.Date}</p>
+                                </div>
+                            `;
+                        });
+
+                        outputHTML += `
+                            <div class="mb-3">
+                                <h6 class="text-success">Previous Fine Violations Found</h6>
+                                ${finesHTML}
+                            </div>
+                        `;
+                    }
+
+                    // Now fetch court violations
+                    fetch("/court_table")
+                        .then(response => response.json())
+                        .then(courtData => {
+                            if (!courtData.error) {
+                                const filteredCourtCases = courtData.filter(court => court.Lic_number === licenseNumber);
+                                totalViolations += filteredCourtCases.length;
+
+                                let courtHTML = "";
+                                if (filteredCourtCases.length > 0) {
+                                    filteredCourtCases.forEach(court => {
+                                        courtHTML += `
+                                            <div class="border-bottom py-2">
+                                                <p class="mb-1 text-danger"><strong>C-V:</strong> ${court.Violation}</p>
+                                                <p class="mb-0 text-danger"><strong>Date:</strong> ${court.Date_Time}</p>
+                                            </div>
+                                        `;
+                                    });
+
+                                    outputHTML += `
+                                        <div class="mt-4 mb-2">
+                                            <h6 class="text-success">Previous Court Violations Found</h6>
+                                            ${courtHTML}
+                                        </div>
+                                    `;
+                                }
+
+                                // Final output
+                                if (totalViolations > 3) {
+                                    resultContainer.innerHTML = `
+                                        <div class="alert alert-danger">
+                                            <strong>This license is temporarily banned by police department.</strong><br>
+                                            Because they exceed violations by five, Please hand over them to the police station.
+                                        </div>
+                                    `;
+                                } else {
+                                    resultContainer.innerHTML = `
+                                        <div class="mb-2">
+                                            <p><strong>Total Violations:</strong> ${totalViolations}</p>
+                                            <p><strong>Total Fine Amount:</strong> Rs. ${totalFine}</p>
+                                        </div>
+                                        ${outputHTML || '<div class="alert alert-info">No Violations Found.</div>'}
+                                    `;
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            resultContainer.innerHTML += `<div class="alert alert-warning mt-3">Error fetching court data: ${error}</div>`;
+                        });
+                })
+                .catch(error => {
+                    resultContainer.innerHTML = `<div class="alert alert-warning">Error fetching fine data: ${error}</div>`;
+                });
+        });
+    });
+</script>
+
+
+
+  <script src="/static/old/vendor/jquery/jquery.min.js"></script>
+  <script src="/static/old/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/old/assets/js/owl-carousel.js"></script>
+  <script src="/static/old/assets/js/animation.js"></script>
+  <script src="/static/old/assets/js/imagesloaded.js"></script>
+  <script src="/static/old/assets/js/custom.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!-- vehicles.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Vehicles</title>
+</head>
+<body>
+    <h1>Your Vehicles</h1>
+
+    {% if fines %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Vehicle Name</th>
+                <th>Vehicle Number</th>
+                <th>Fine</th>
+                <th>Violation</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vehicle in vehicles %}
+            <tr>
+                <td>{{ fine[1] }}</td>
+                <td>{{ vehicle[2] }}</td>
+                <td>{{ vehicle[3] }}</td>
+                <td>{{ vehicle[4] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No vehicles found for your account.</p>
+    {% endif %}
+
+    <a href="/">Back to Home</a>
+</body>
+</html>

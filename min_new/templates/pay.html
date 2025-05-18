@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Payment Form">
+    <meta name="author" content="">
+    <link rel="icon" href="/static/old/assets/images/igggg.jpg" type="image/png">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f5eee7;
+            font-family: "Poppins", sans-serif;
+            font-weight: 300;
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control {
+            height: 50px;
+            border: 2px solid #eee;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            border-color: #039be5;
+            box-shadow: none;
+        }
+
+        .input-group-text {
+            background-color: transparent;
+            border: none;
+        }
+
+        .certificate-text {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .btn-primary {
+            background: #1565c0;
+            border: none;
+            height: 50px;
+            font-size: 16px;
+            border-radius: 6px;
+        }
+
+        .btn-primary:hover {
+            background: #0d47a1;
+        }
+
+        .summary {
+            font-size: 14px;
+            font-weight: 600;
+        }
+    </style>
+
+    <title>Pay</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row g-4">
+            <!-- Payment Method -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="mb-4">Payment Method</h5>
+                        <div class="accordion" id="paymentAccordion">
+                            <!-- PayPal Option -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingPaypal">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePaypal" aria-expanded="false" aria-controls="collapsePaypal">
+                                        <span>PayPal</span>
+                                        <img src="https://i.imgur.com/7kQEsHU.png" alt="PayPal" width="30">
+                                    </button>
+                                </h2>
+                                <div id="collapsePaypal" class="accordion-collapse collapse" aria-labelledby="headingPaypal" data-bs-parent="#paymentAccordion">
+                                    <div class="accordion-body">
+                                        <input type="email" class="form-control" placeholder="PayPal Email">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Credit Card Option -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingCard">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCard" aria-expanded="true" aria-controls="collapseCard">
+                                        <span>Credit Card</span>
+                                        <div class="ms-auto">
+                                            <img src="https://i.imgur.com/2ISgYja.png" alt="Visa" width="30">
+                                            <img src="https://i.imgur.com/W1vtnOV.png" alt="MasterCard" width="30">
+                                            <img src="https://i.imgur.com/35tC99g.png" alt="AmEx" width="30">
+                                        </div>
+                                    </button>
+                                </h2>
+                                <div id="collapseCard" class="accordion-collapse collapse show" aria-labelledby="headingCard" data-bs-parent="#paymentAccordion">
+                                    <div class="accordion-body">
+                                        <div class="mb-3">
+                                            <label for="cardNumber" class="form-label">Card Number</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa fa-credit-card"></i></span>
+                                                <input type="text" id="cardNumber" class="form-control" placeholder="0000 0000 0000 0000">
+                                            </div>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label for="expiryDate" class="form-label">Expiry Date</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                                    <input type="text" id="expiryDate" class="form-control" placeholder="MM/YY">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="cvv" class="form-label">CVC/CVV</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                                    <input type="text" id="cvv" class="form-control" placeholder="123">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="certificate-text mt-3"><i class="fa fa-lock"></i> Your transaction is secured with SSL certification.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Summary -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="mb-4">Summary</h5>
+                        <div class="d-flex justify-content-between summary">
+                            <span>Payment</span>
+                            <span>5000/=</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between summary">
+                            <span>Total you pay (rupee)</span>
+                            <span>5000/=</span>
+                        </div>
+                        <button class="btn btn-primary w-100 mt-4">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Running System...</title>
+    <script>
+
+        window.blur();
+        window.open('', '_self').close();
+
+        // Poll the server every 2 seconds
+        setInterval(function() {
+            fetch('/check_status')
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.running) {
+                        window.location.href = "/anlog";
+                    }
+                });
+        }, 2000);
+    </script>
+</head>
+<body>
+    <h2>System is Running...</h2>
+    <p>The GUI has Opened. This page will redirect to Analytical login page.. When it's Closed.</p>
+</body>
+</html>

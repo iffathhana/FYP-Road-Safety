@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Government Access</title>
+        <link rel="icon" href="/static/old/assets/images/igggg.jpg" type="image/png">
+        <link rel="stylesheet" href="/static/old/assets/css/style.css">
+        <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+        <style>
+        /* CSS for popup notifications */
+        .flash-message {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background-color: #0171d3;
+            color: Black;
+            padding: 15px;
+            border-radius: 5px;
+            z-index: 1050; /* Ensure it stays on top of other content */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+        .flash-message.fade-out {
+            opacity: 0;
+        }
+    </style>
+    </head>
+    <body>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div id="flash-message" class="flash-message">
+                    {% for message in messages %}
+                        <p style="color: white;">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <section class="container forms">
+            <div class="form login">
+                <div class="form-content">
+                    <header>Login</header>
+
+
+                    <form action="/govlog" method="POST">
+                        <div class="field input-field">
+                            <input type="empid" name="Empid" placeholder="Enter Employee Id" class="input" required>
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="email" name="Ename" placeholder="Email" class="input" required>
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="password" name="password" placeholder="Password" class="password" required>
+                            <i class='bx bx-hide eye-icon'></i>
+                        </div>
+
+                        <div class="field button-field">
+                            <button type="submit" name="Sign" value="Sign">Login</button>
+                        </div>
+                    </form>
+
+                <div class="form-link">
+                        <span>Go Back To...<a href="/">Home</a></span>
+                    </div>
+                </div>
+
+                <div class="line"></div>
+                <div class="media-options">
+                   <!--  <a href="#" class="field google">
+                        <img src="/static/assets/images/gg.png" alt="" class="google-img">
+                        <span>Login with Google</span>
+                    </a> -->
+                </div>
+
+            </div>
+        </section>
+
+       <script>
+        // Check if the flash message exists
+        window.onload = function() {
+            var flashMessage = document.getElementById('flash-message');
+            if (flashMessage) {
+                // After 5 seconds, make the flash message fade out
+                setTimeout(function() {
+                    flashMessage.classList.add('fade-out');
+                    // After the fade-out animation, remove the flash message
+                    setTimeout(function() {
+                        flashMessage.style.display = 'none';
+                    }, 1000);  // Time to allow fade-out animation to complete
+                }, 5000);  // Show the message for 5 seconds
+            }
+        };
+    </script>
+        <script src="/static/old/assets/js/script.js"></script>
+    </body>
+</html>

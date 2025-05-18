@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Public Portal</title>
+        <link rel="icon" href="/static/old/assets/images/igggg.jpg" type="image/png">
+        <link rel="stylesheet" href="/static/old/assets/css/style.css">
+        <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+        <script src="https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js"></script>
+<style>
+        /* CSS for popup notifications */
+        .flash-message {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background-color: #0171d3;
+            color: Black;
+            padding: 15px;
+            border-radius: 5px;
+            z-index: 1050; /* Ensure it stays on top of other content */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+        .flash-message.fade-out {
+            opacity: 0;
+        }
+    </style>
+
+    </head>
+    <body>
+{% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div id="flash-message" class="flash-message">
+                    {% for message in messages %}
+                        <p style="color: white;">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <section class="container forms">
+            <div class="form login">
+                <div class="form-content">
+                    <header>Login</header>
+
+
+                    <form action="/log_in" method="POST">
+                        <div class="field input-field">
+                            <input type="email" name="Ename" placeholder="Email" class="input" required>
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="password" name="password" placeholder="Password" class="password" required>
+                            <i class='bx bx-hide eye-icon'></i>
+                        </div>
+
+                        <div class="form-link">
+                            <a href="" class="forgot-pass">Forgot password?</a>
+                        </div>
+
+                        <div class="field button-field">
+                            <button type="submit" name="Sign_In" value="Sign_In"> Login </button>
+                        </div>
+                    </form>
+
+                    <div class="form-link">
+                        <span>Don't have an account? <a href="#" class="link signup-link">Signup</a></span>
+                    </div>
+                    <div class="form-link">
+                        <span>Go Back to... <a href="/">Home</a></span>
+                    </div>
+                </div>
+
+                <div class="line"></div>
+                <div class="media-options">
+                    <a href="#" class="field google">
+                        <img src="/static/old/assets/images/gg.png" alt="" class="google-img">
+                        <span>Login with Google</span>
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- Signup Form -->
+
+            <div class="form signup">
+                <div class="form-content">
+
+                    <header>Signup</header>
+                    <form action="/log_in" method="POST">
+                        <div id="qr-reader" style="width: 400px; height: 300px; margin: auto;"></div>
+
+                        <div class="field input-field">
+                            <input type="text" name="Name" placeholder="Enter Name" class="input">
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="lic" id="qr-result" name="Lic" placeholder="Enter Lic Number" class="input" required>
+
+                        </div>
+
+                      <div class="field input-field">
+                            <input type="text" name="Nic" placeholder="Enter Nic Number" class="input">
+                        </div>
+
+                      <div class="field input-field">
+                           <input type="date" name="Datetime" id="datetime" class="formbold-form-input" placeholder="Date of Birth" required/>
+                      </div>
+                        <br>
+
+                        <div class="field input-field">
+                            <input type="email" name="Email" placeholder="Enter Email" class="input"  required>
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="address" name="Address" placeholder="Enter Address" class="input" required>
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="phone Number" name="Phone" placeholder="Phone-Number" class="input" maxlength="12" required>
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="password" name="Password" placeholder="Enter password" class="password" required>
+                            <i class='bx bx-hide eye-icon'></i>
+                        </div>
+
+                        <div class="field button-field">
+                            <button type="submit" name="Sign_Up" value="Sign_Up">Signup</button>
+                        </div>
+                    </form>
+
+                    <div class="form-link">
+                        <span>Already have an account? <a href="#" class="link login-link">Login</a></span>
+                    </div>
+                </div>
+
+                <div class="line"></div>
+
+
+
+                <div class="media-options">
+                    <a href="" class="field google">
+                        <img src="/static/old/assets/images/gg.png" alt="ds" class="google-img">
+                        <span>Login with Google</span>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+<script>
+        // Function to handle successful QR code scan
+        function onScanSuccess(decodedText, decodedResult) {
+            // Display the scanned result in the input box
+            document.getElementById('qr-result').value = decodedText;
+
+            // Optionally, display it under the text box as well
+            document.getElementById('result-display').innerText = "Scanned QR Code: " + decodedText;
+
+            // Send the scanned QR code to Flask backend for further processing
+            fetch('/scan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ qr_data: decodedText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Function to handle scan errors (optional)
+        function onScanError(errorMessage) {
+            console.warn("Scan error:", errorMessage);
+        }
+
+        // Initialize the QR scanner with camera access
+        const html5QrCode = new Html5Qrcode("qr-reader");
+
+        // Start scanning with the back camera (facingMode: "environment") or front camera if not available
+        html5QrCode.start(
+            { facingMode: "environment" },  // Use the back camera (environment-facing)
+            {
+                fps: 30,      // Increase frames per second (up to 30 FPS or more for faster response)
+                qrbox: 250,   // Optimize the size of the scanning box for fast detection
+                  // Keep the aspect ratio for a balanced scan area
+                mirror: false // Ensure the image isn't mirrored
+            },
+            onScanSuccess,  // Callback on scan success
+            onScanError     // Callback on scan error
+        ).catch((error) => {
+            console.error("Error starting QR scanner:", error);
+        });
+    </script>
+        <script src="/static/old/assets/js/script.js"></script>
+    <script>
+        // Check if the flash message exists
+        window.onload = function() {
+            var flashMessage = document.getElementById('flash-message');
+            if (flashMessage) {
+                // After 5 seconds, make the flash message fade out
+                setTimeout(function() {
+                    flashMessage.classList.add('fade-out');
+                    // After the fade-out animation, remove the flash message
+                    setTimeout(function() {
+                        flashMessage.style.display = 'none';
+                    }, 1000);  // Time to allow fade-out animation to complete
+                }, 5000);  // Show the message for 5 seconds
+            }
+        };
+    </script>
+    </body>
+</html>
