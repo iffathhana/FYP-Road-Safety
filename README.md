@@ -8,5 +8,6 @@ The state of the road, traffic, accidents, speed, and other factors all affect h
 <img width="903" height="485" alt="image" src="https://github.com/user-attachments/assets/fdb9e08f-f5f9-4e3b-ba29-db3f19577bec" />
 
 <img width="975" height="515" alt="image" src="https://github.com/user-attachments/assets/ff23eb3b-68c4-4d05-8221-c4673772386b" />
+<img width="376" height="506" alt="image" src="https://github.com/user-attachments/assets/2b3f51bb-ebed-4b3b-9e45-f32d248ce504" />
 
 
